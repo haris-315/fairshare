@@ -1,17 +1,19 @@
-import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 
 abstract class GroupEvent {}
 
 class CreateGroupEvent extends GroupEvent {
   final String name;
-  final List<String> memberEmails;
+  final List<String> members;
   final String userId;
-  final File groupIcon;
+  final XFile groupIcon;
+
   CreateGroupEvent({
     required this.name,
-    required this.memberEmails,
+    required this.members,
     required this.userId,
-    required this.groupIcon
+    required this.groupIcon,
   });
 }
 
@@ -19,12 +21,15 @@ class AddExpenseEvent extends GroupEvent {
   final String groupId;
   final double amount;
   final String description;
+  final String userId;
 
   AddExpenseEvent({
     required this.groupId,
     required this.amount,
     required this.description,
+    required this.userId
   });
+
 }
 
 class AddCommentEvent extends GroupEvent {

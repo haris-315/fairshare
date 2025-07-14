@@ -3,22 +3,14 @@ import '../../domain/entities/expense.dart';
 
 class ExpenseModel extends Expense {
   ExpenseModel({
-    required String id,
-    required String groupId,
-    required String userId,
-    required double amount,
-    required String description,
-    required DateTime createdAt,
-    required List<CommentModel> comments,
-  }) : super(
-          id: id,
-          groupId: groupId,
-          userId: userId,
-          amount: amount,
-          description: description,
-          createdAt: createdAt,
-          comments: comments,
-        );
+    required super.id,
+    required super.groupId,
+    required super.userId,
+    required super.amount,
+    required super.description,
+    required super.createdAt,
+    required List<CommentModel> super.comments,
+  });
 
   factory ExpenseModel.fromJson(Map<String, dynamic> json) {
     return ExpenseModel(
@@ -48,11 +40,11 @@ class ExpenseModel extends Expense {
 
 class CommentModel extends Comment {
   CommentModel({
-    required String id,
-    required String userId,
-    required String content,
-    required DateTime createdAt,
-  }) : super(id: id, userId: userId, content: content, createdAt: createdAt);
+    required super.id,
+    required super.userId,
+    required super.content,
+    required super.createdAt,
+  });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(

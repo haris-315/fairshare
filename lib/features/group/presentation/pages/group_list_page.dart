@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../bloc/group_bloc.dart';
 import '../bloc/group_event.dart';
 import '../bloc/group_state.dart';
-import 'create_group_page.dart';
 import 'group_dashboard_page.dart';
 
 class GroupListPage extends StatelessWidget {
+  const GroupListPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final userId = Supabase.instance.client.auth.currentUser!.id;
@@ -51,12 +53,26 @@ class GroupListPage extends StatelessWidget {
                 final group = state.groups[index];
                 return Card(
                   elevation: 4,
-                  margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 8,
+                  ),
                   child: ListTile(
-                    leading: const Icon(Icons.group, color: Colors.blue),
-                    title: Text(group.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Text('Created: ${DateTime.parse(group.).toLocal().toString().substring(0, 16)}'),
-                    onTap: () => Navigator.pushNamed(context, '/group/${group.id}'),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(group.groupIcon),
+                    ),
+                    title: Text(
+                      group.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (ctx) => GroupDashboardPage(groupId: group.id),
+                          ),
+                        ),
                   ),
                 );
               },

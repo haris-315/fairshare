@@ -23,52 +23,52 @@ class GroupRepositoryImpl implements GroupRepository {
   }
 
   @override
-  Future<Either<Failure, void>> addExpense(String groupId, double amount, String description) async {
+  Future<Either<Failure, void>> addExpense(String groupId, String userId, double amount, String description) async {
     try {
-      await remoteDataSource.addExpense(groupId, amount, description);
+      await remoteDataSource.addExpense(groupId, userId, amount,description);
       return Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
   }
 
+  // @override
+  // Future<Either<Failure, void>> addComment(String expenseId, String content) async {
+  //   try {
+  //     await remoteDataSource.addComment(expenseId, content);
+  //     return Right(null);
+  //   } catch (e) {
+  //     return Left(ServerFailure(e.toString()));
+  //   }
+  // }
+
+  // @override
+  // Future<Either<Failure, void>> updateGroup(String groupId, String newName) async {
+  //   try {
+  //     await remoteDataSource.updateGroup(groupId, newName);
+  //     return Right(null);
+  //   } catch (e) {
+  //     return Left(ServerFailure(e.toString()));
+  //   }
+  // }
+
+  // @override
+  // Future<Either<Failure, void>> removeMember(String groupId, String userId) async {
+  //   try {
+  //     await remoteDataSource.removeMember(groupId, userId);
+  //     return Right(null);
+  //   } catch (e) {
+  //     return Left(ServerFailure(e.toString()));
+  //   }
+  // }
+
   @override
-  Future<Either<Failure, void>> addComment(String expenseId, String content) async {
-    try {
-      await remoteDataSource.addComment(expenseId, content);
-      return Right(null);
-    } catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
+  Future<List<Group>> getUserGroups(String userId) async {
+    return await remoteDataSource.getGroups(userId);
   }
 
   @override
-  Future<Either<Failure, void>> updateGroup(String groupId, String newName) async {
-    try {
-      await remoteDataSource.updateGroup(groupId, newName);
-      return Right(null);
-    } catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> removeMember(String groupId, String userId) async {
-    try {
-      await remoteDataSource.removeMember(groupId, userId);
-      return Right(null);
-    } catch (e) {
-      return Left(ServerFailure(e.toString()));
-    }
-  }
-
-  @override
-  Stream<List<Group>> getUserGroups(String userId) {
-    return remoteDataSource.getUserGroups(userId).map((models) => models);
-  }
-
-  @override
-  Stream<List<Expense>> getGroupExpenses(String groupId) {
-    return remoteDataSource.getGroupExpenses(groupId).map((models) => models);
+  Future<List<Expense>> getGroupExpenses(String groupId) async {
+    return await remoteDataSource.getExpenseForGroup(groupId);
   }
 }

@@ -1,11 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../bloc/group_bloc.dart';
 import '../bloc/group_event.dart';
 
@@ -72,8 +71,8 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                     CreateGroupEvent(
                       name: _nameController.text,
                       userId: Supabase.instance.client.auth.currentUser!.id,
-                      groupIcon: File(pickedFile!.path),
-                      memberEmails: [],
+                      groupIcon: pickedFile!,
+                      members: [],
                     ),
                   );
                   Navigator.pop(context);

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 import 'package:fairshare/core/services/cloudinary_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -24,13 +26,12 @@ class _AuthPageState extends State<AuthPage> {
   bool _isSignUp = false;
   bool _isAwaitingOTP = false;
   String? _profilePictureUrl;
-  final _cloudinaryService = CloudinaryService();
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      final url = await _cloudinaryService.uploadImage(pickedFile.path);
+      final url = await CloudinaryService.uploadImage(pickedFile.path);
       setState(() => _profilePictureUrl = url);
     }
   }

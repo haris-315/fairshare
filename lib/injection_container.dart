@@ -11,7 +11,6 @@ import 'features/group/data/repositories/group_repository_impl.dart';
 import 'features/group/domain/repositories/group_repository.dart';
 import 'features/group/domain/usecases/add_expense.dart';
 import 'features/group/domain/usecases/create_group.dart';
-import 'features/group/domain/usecases/update_group.dart';
 import 'features/group/presentation/bloc/group_bloc.dart';
 
 final sl = GetIt.instance;
@@ -25,7 +24,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SignUp(sl()));
   sl.registerLazySingleton(() => CreateGroup(sl()));
   sl.registerLazySingleton(() => AddExpense(sl()));
-  sl.registerLazySingleton(() => UpdateGroup(sl()));
+  // sl.registerLazySingleton(() => UpdateGroup(sl()));
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(
@@ -40,7 +39,7 @@ Future<void> init() async {
       repository: sl(),
       createGroup: sl(),
       addExpense: sl(),
-      updateGroup: sl(),
+      // updateGroup: sl(),
     ),
   );
   // Data Sources
