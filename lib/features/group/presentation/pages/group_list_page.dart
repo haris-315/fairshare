@@ -5,7 +5,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../bloc/group_bloc.dart';
 import '../bloc/group_event.dart';
 import '../bloc/group_state.dart';
-import 'group_dashboard_page.dart';
 
 class GroupListPage extends StatelessWidget {
   const GroupListPage({super.key});
@@ -65,14 +64,15 @@ class GroupListPage extends StatelessWidget {
                       group.name,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onTap:
-                        () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (ctx) => GroupDashboardPage(groupId: group.id),
-                          ),
-                        ),
+                    onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder:
+                      //         (ctx) => GroupDashboardPage(groupId: group.id),
+                      //   ),
+                      // );
+                    },
                   ),
                 );
               },

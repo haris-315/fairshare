@@ -3,8 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 abstract class AuthRemoteDataSource {
   Future<User> signIn(String email, String password);
-  Future<User> signUp(String email, String password);
+  Future<User> signUp(String email, String name, String profilePic);
   Future<User> verifyOTP(String email, String otp);
+  Future<bool> checkUser(String email);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -23,15 +24,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<User> signUp(String email, String password) async {
-    final response = await supabase.auth.signUp(
-      email: email,
-      password: password,
-    );
-    if (response.user == null) {
-      throw Exception('Sign up failed');
-    }
-    return User.fromSb(response.user!);
+  Future<User> signUp(String userId, String name, String profilePic) async {
+    final res =
+        await supabase.from("profiles").insert({
+          'name': name,
+          'profile_pic': profilePic,
+        }).select();
+
+    return User.fromMap(res);
   }
 
   @override
@@ -41,9 +41,23 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       type: sb.OtpType.signup,
       email: email,
     );
+
     if (response.user == null) {
       throw Exception('OTP verification failed');
     }
+
     return User.fromSb(response.user!);
+  }
+
+  @override
+  Future<bool> checkUser(String email) async {
+    final res =
+        await supabase
+            .from('profiles')
+            .select()
+            .eq('email', email)
+            .maybeSingle();
+    supabase.auth.signInWithOtp(email: email);
+    return res != null;
   }
 }

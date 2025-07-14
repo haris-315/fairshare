@@ -25,3 +25,6 @@ class AuthError extends AuthState {
 
   AuthError(this.message);
 }
+
+class AuthUserExists extends AuthState {}
+class AuthUserDoesNotExist extends AuthState {}

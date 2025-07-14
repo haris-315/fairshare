@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
+
 import 'package:fairshare/core/error/failures.dart';
 import 'package:fairshare/core/usecases/usecase.dart';
 
@@ -13,7 +15,7 @@ class SignUp implements UseCase<User, SignUpParams> {
   @override
   Future<Either<Failure, User>> call(SignUpParams params) async {
     try {
-      final user = await repository.signUp(params.email, params.password);
+      final user = await repository.signUp(params.email,params.name, params.profilePic);
       return Right(user);
     } catch (e) {
       // In a real application, you would handle different types of exceptions
@@ -26,7 +28,11 @@ class SignUp implements UseCase<User, SignUpParams> {
 
 class SignUpParams {
   final String email;
-  final String password;
-
-  SignUpParams({required this.email, required this.password});
+  final String name;
+  final String profilePic;
+  SignUpParams({
+    required this.email,
+    required this.name,
+    required this.profilePic,
+  });
 }

@@ -1,3 +1,4 @@
+import 'package:fairshare/features/auth/domain/usecases/check_user.dart';
 import 'package:get_it/get_it.dart';
 
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
@@ -17,11 +18,14 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // BLoC
-  sl.registerFactory(() => AuthBloc(signIn: sl(), signUp: sl()));
+  sl.registerFactory(
+    () => AuthBloc(signIn: sl(), signUp: sl(), checkUser: sl()),
+  );
 
   // Use Cases
   sl.registerLazySingleton(() => SignIn(sl()));
   sl.registerLazySingleton(() => SignUp(sl()));
+  sl.registerLazySingleton(() => CheckUser(sl()));
   sl.registerLazySingleton(() => CreateGroup(sl()));
   sl.registerLazySingleton(() => AddExpense(sl()));
   // sl.registerLazySingleton(() => UpdateGroup(sl()));

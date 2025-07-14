@@ -1,4 +1,5 @@
 import 'package:fairshare/features/auth/domain/entities/user.dart';
+import 'package:fairshare/features/auth/domain/usecases/check_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
@@ -10,9 +11,13 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignIn signIn;
   final SignUp signUp;
-
-  AuthBloc({required this.signIn, required this.signUp})
-    : super(AuthInitial()) {
+  final CheckUser checkUser;
+  bool alreadyRegistred = false;
+  AuthBloc({
+    required this.signIn,
+    required this.signUp,
+    required this.checkUser,
+  }) : super(AuthInitial()) {
     on<SignInEvent>((event, emit) async {
       emit(AuthLoading());
       try {
@@ -28,11 +33,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    on<CheckUserEvent>((event, emit) async {
+      emit(AuthLoading());
+      try {
+        final res = await checkUser(event.email);
+        res.fold((fail) => emit(AuthError("There was an error: $fail")), (dex) {
+          alreadyRegistred = dex;
+        });
+      } catch (e) {
+        emit(AuthError(e.toString()));
+      }
+    });
+
     on<SignUpEvent>((event, emit) async {
       emit(AuthLoading());
       try {
         final user = await signUp(
-          SignUpParams(email: event.email, password: event.password),
+          SignUpParams(
+            email: event.email,
+            name: event.name,
+            profilePic: event.profilePic,
+          ),
         );
         user.fold(
           (e) => emit(AuthError(e.message)),
@@ -57,6 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               email: session.user?.email ?? "",
               id: session.user?.id ?? "",
               profile: session.user?.userMetadata?['profile_pic'],
+              name: session.user?.userMetadata?['name'],
             ),
           ),
         );
